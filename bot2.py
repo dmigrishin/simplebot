@@ -50,7 +50,7 @@ def send_cat(bot, update, user_data):
 
 
 def start_bot():
-    my_bot = Updater(settings.TELEGRAM_API_KEY)
+    my_bot = Updater(settings.TELEGRAM_API_KEY, request_kwargs=settings.PROXY)
 
     dp = my_bot.dispatcher
     dp.add_handler(CommandHandler("start", reply_to_start_command, pass_user_data=True))

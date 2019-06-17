@@ -22,7 +22,7 @@ def chat(bot, update):
 
 
 def main():
-    updtr = Updater(settings.TELEGRAM_API_KEY)
+    updtr = Updater(settings.TELEGRAM_API, request_kwargs=settings.PROXY)
 
     updtr.dispatcher.add_handler(CommandHandler("start", start_bot))
     updtr.dispatcher.add_handler(MessageHandler(Filters.text, chat))

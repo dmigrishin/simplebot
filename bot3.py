@@ -1,7 +1,8 @@
-from glob import glob1
+from glob import glob
 import logging
-import random
+from random import choice
 import os
+import settings
 from emoji import emojize
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, RegexHandler
 from telegram import ReplyKeyboardMarkup, KeyboardButton
@@ -14,7 +15,7 @@ def get_avatar(user_data):
     if user_data.get('avatar'):
         return user_data.get('avatar')
     else:
-        user_data['avatar'] = emojize(random.choice(avatars), use_aliases=True)
+        user_data['avatar'] = emojize(choice(avatars), use_aliases=True)
         return user_data['avatar']
 
 
@@ -35,8 +36,8 @@ def reply_to_start_command(bot, update, user_data):
 
 
 def send_cat(bot, update, user_data):
-    cat_list = glob1("cats", "*.jp*g")
-    cat_pic = os.path.join('cats', random.choice(cat_list))
+    cat_list = glob('images/cat*.jp*g')
+    cat_pic = choice(cat_list)
     chat_id = update.message.chat_id
     bot.send_photo(chat_id=chat_id, photo=open(cat_pic, 'rb'))
 
@@ -71,7 +72,7 @@ def get_location(bot, update, user_data):
 
 
 def start_bot():
-    my_bot = Updater(TELEGRAM_API_KEY)
+    my_bot = Updater(settings.TELEGRAM_API_KEY, request_kwargs=settings.PROXY)
 
     dp = my_bot.dispatcher
     dp.add_handler(CommandHandler("start", reply_to_start_command, pass_user_data=True))
